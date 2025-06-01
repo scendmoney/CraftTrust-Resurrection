@@ -1,0 +1,30 @@
+generates:
+  # src/graphql/scheme/_client.graphql:
+  #   schema: 'src/graphql/scheme/client/**/*.graphql'
+  #   plugins:
+  #     - add:
+  #         content:
+  #           - '# ------------------------------------------------------'
+  #           - '# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)'
+  #           - '# ------------------------------------------------------'
+  #     - schema-ast
+  src/graphql/_server.ts:
+    schema: https://backend.dev.crafttrust.com/graphql
+    plugins:
+      - add:
+          content:
+            - '// ------------------------------------------------------'
+            - '// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)'
+            - '// ------------------------------------------------------'
+      - typescript
+      - typescript-operations
+    config:
+      avoidOptionals: false
+      typesPrefix: I
+      enumPrefix: false
+      declarationKind:
+        type: 'interface'
+        input: 'interface'
+      scalars:
+        AWSDateTime: string
+        JSON: object

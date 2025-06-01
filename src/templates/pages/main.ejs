@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Craft Trust</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&display=swap');
+
+    html {
+      all: unset;
+    }
+
+    body {
+      background: #EFEFEF;
+      font-family: 'Space Grotesk', sans-serif;
+      line-height: 120%;
+      letter-spacing: -0.56px;
+    }
+
+    a {
+      text-decoration: underline;
+      color: #000;
+    }
+
+    a:hover {
+      text-decoration: underline !important;
+      color: #000;
+    }
+
+    b {
+      font-weight: 500;
+    }
+
+    span {
+      color: #777;
+    }
+
+    .header {
+      margin: 0 auto;
+      width: 107px;
+      margin: 48px auto;
+    }
+
+    .content {
+      border-radius: 12px;
+      margin: 0 auto;
+      max-width: 480px;
+      background: #ffffff;
+      padding: 48px 32px;
+    }
+
+    .footer {
+      margin: 0 auto;
+      padding: 48px 32px;
+      max-width: 480px;
+      gap: 14px;
+    }
+
+    .footer-items-left {
+      float: left;
+      margin-right: 10px;
+    }
+
+    .footer-items-right {
+      float: right;
+      margin-left: 10px;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 120%;
+      letter-spacing: -0.96px;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+
+    p {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 120%;
+      letter-spacing: -0.56px;
+      color: #1E1E1E;
+      margin-top: 30px;
+    }
+
+    .button-wrapper {
+      overflow: hidden;
+      height: 43px;
+      display: flex;
+      margin-top: 30px;
+    }
+
+    .button {
+      font-family: 'Space Grotesk', sans-serif;
+      border-radius: 12px;
+      background: #EB4F4F;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+      text-decoration: none;
+      min-width: 212px;
+      padding: 0px 16px;
+      height: 43px;
+      color: #fff;
+      overflow: hidden;
+      font-family: 'Space Grotesk', sans-serif;
+      color: #fff;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 43px;
+      letter-spacing: -0.64px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .button:hover {
+      text-decoration: none !important;
+      color: #fff;
+      background: #000;
+      transition: all 0.3s ease-in-out;
+    }
+
+    @media only screen and (max-width: 700px) {
+      .footer-items-left {
+        float: none;
+        margin-right: 0px;
+      }
+
+      .footer-items-right {
+        float: none;
+        margin-left: 0px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="header" class="header">
+    <img src="<%= fields.platformUrl %>/resources/mail/logo.png" alt="Logo" width="107" height="48" />
+  </div>
+  <div id="body" role="presentation" class="content">
+    <% if (path) { %>
+      <%- include(`../partials/${path}`, { fields }); %>
+        <% } else { %>
+          Need to add path to template
+          <% } %>
+  </div>
+
+  <div id="footer" class="footer">
+    <div class="footer-items-left"><span style="font-size: 12px; color: #777; text-decoration: none;">© Craft
+        Trust</span></div>
+    <div class="footer-items-left"><a style="font-size: 12px; color: #777; text-decoration: none;" target="_blank"
+        href="<%= fields.platformUrl %>">Unsubscribe</a></div>
+
+    <div class="footer-items-right">
+      <a target="_blank" href="<%= fields.platformUrl %>"
+        style="font-size: 12px; color: #777; text-decoration: none;">Privacy Policy</a>
+    </div>
+    <div class="footer-items-right">
+      <a target="_blank" href="<%= fields.platformUrl %>"
+        style="font-size: 12px; color: #777; text-decoration: none;">Terms of Service</a>
+    </div>
+  </div>
+
+</body>
+
+</html>

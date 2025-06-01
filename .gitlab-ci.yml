@@ -1,0 +1,7 @@
+include:
+  - project: "crafttrust/manifest"
+    ref: "master"
+    file: "/gitlab/templates/Main.gitlab-ci.yml"
+
+variables:
+  PROJECT_NAME: "crafttrust-frontend"

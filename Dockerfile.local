@@ -1,0 +1,8 @@
+FROM node:20.2-buster
+WORKDIR /app
+COPY ./crafttrust-frontend/package.json ./crafttrust-frontend/yarn.lock ./
+RUN yarn install
+
+COPY ./crafttrust-frontend/ .
+RUN yarn install
+CMD yarn start:docker

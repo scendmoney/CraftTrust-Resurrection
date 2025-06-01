@@ -1,0 +1,42 @@
+version: "3.9"
+volumes:
+  volume1:
+services:
+  redis:
+    image: "bitnami/redis:latest"
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_PORT_NUMBER: 6379
+    restart: always
+    ports:
+      - "6379:6379"
+
+  db:
+    image: postgres:latest
+    restart: on-failure
+    environment:
+      POSTGRES_USER: crafttrust
+      PGPORT: 5432
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      dockerfile: ./crafttrust-backend/Dockerfile.local
+    volumes:
+      - ./crafttrust-backend:/app
+      - /app/node_modules
+    restart: on-failure
+    ports:
+      - "9000:9000"
+
+  frontend:
+    build:
+      dockerfile: ./crafttrust-frontend/Dockerfile.local
+    volumes:
+      - ./crafttrust-frontend:/app
+      - /app/node_modules
+    restart: on-failure
+    ports:
+      - "3000:3000"

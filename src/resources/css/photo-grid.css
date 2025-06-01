@@ -1,0 +1,75 @@
+.photo-frame {
+  display: block;
+  box-sizing: content-box;
+  position: relative;
+  background: #ddd;
+  cursor: pointer;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.photo-frame, .photo-frame img {
+  outline: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.photo-frame.overlay {
+  cursor: grabbing;
+  transform: scale(0.5);
+}
+
+.photo-frame.active, .photo-frame.active img {
+  opacity: 0.7;
+  filter: grayscale(100%);
+}
+
+.photo-frame.insertBefore:before, .photo-frame.insertAfter:after {
+  content: "";
+  position: absolute;
+  background-color: #000;
+  animation: pulse 5s infinite;
+  transform: scale(1, 0.5)
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1, 0.5)
+  }
+
+  50% {
+    transform: scale(1)
+  }
+
+  100% {
+    transform: scale(1, 0.5)
+  }
+}
+
+.react-photo-album--row .photo-frame.insertBefore:before, .react-photo-album--row .photo-frame.insertAfter:after {
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.react-photo-album--row .photo-frame.insertBefore:before {
+  left: -7px;
+}
+
+.react-photo-album--row .photo-frame.insertAfter:after {
+  right: -7px
+}
+
+.react-photo-album--column .photo-frame.insertBefore:before, .react-photo-album--column .photo-frame.insertAfter:after {
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.react-photo-album--column .photo-frame.insertBefore:before {
+  top: -7px;
+}
+
+.react-photo-album--column .photo-frame.insertAfter:after {
+  bottom: -7px;
+}
