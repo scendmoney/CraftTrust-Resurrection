@@ -17,5 +17,18 @@
     "baseUrl": "src"
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "src/main.ts",
+    "src/index.ts",
+    "src/entities/**/*",
+    "src/common/**/*",
+    "src/config/**/*",
+    "src/enums/**/*",
+    "src/graphql/**/*",
+    "src/migrations/**/*",
+    "src/routes.ts",
+    "src/utils/index_filter.ts",
+    "src/utils/utils.ts"
+  ]
 }
