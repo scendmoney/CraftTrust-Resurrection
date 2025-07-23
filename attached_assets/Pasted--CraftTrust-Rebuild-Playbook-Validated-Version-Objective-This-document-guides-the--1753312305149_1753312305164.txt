@@ -1,0 +1,127 @@
+# 📘 CraftTrust Rebuild Playbook (Validated Version)
+
+## 🧭 Objective
+
+This document guides the verified, exact, and **immutable** reconstruction of the CraftTrust backend and frontend environments from archival source files. It ensures total alignment with original structure, file count, and no regeneration, mutation, or scaffolding of any kind.
+
+---
+
+## 🔐 Zero-Mutation Principles
+
+* **No code or route generation** unless verified missing.
+* **No additional dependencies** beyond those explicitly defined in package files.
+* **No new folders, mock data, or filler content**.
+* **All file/folder names must match original case and pathing**.
+
+---
+
+## 📦 Archive Summary
+
+| Archive Name                     | Files | Description                     |
+| -------------------------------- | ----- | ------------------------------- |
+| `crafttrust-source-backend.tgz`  | 462   | Backend codebase + config files |
+| `crafttrust-source-frontend.tgz` | 1592  | Frontend application (Next.js)  |
+| **TOTAL**                        | 2054  | Verified via `.sh` scripts      |
+
+✅ Extraction verified using `count-archives.sh`, `count-extracted.sh`, and `find-missing-files.sh`
+
+---
+
+## 📁 Directory Layout (Confirmed Extracted)
+
+```
+/workspace
+├── src/                # Main application code (Node.js/GraphQL)
+├── libs/               # Internal libraries (customerio, redis, etc.)
+├── public/             # Static assets
+├── pages/              # Next.js routes
+├── database/           # DB seed/init
+├── .husky/             # Git hooks
+├── .vscode/            # Editor config
+├── .dockerignore
+├── cloudbuild.yaml
+├── docker-compose.yml
+├── Dockerfile*
+├── .env.*              # (May exist post-rebuild)
+├── package.json
+├── tsconfig.json
+├── yarn.lock
+```
+
+---
+
+## 🛠️ Rebuild Steps (Backend + Frontend)
+
+### 1. ⬇️ Install Dependencies
+
+Ensure **NO **`**, **`**, or **\`\`** commands** are used.
+
+```bash
+cd ~/workspace
+yarn install  # or npm ci if specified
+```
+
+### 2. 🧪 Validate Environment
+
+```bash
+node -v     # match Node version to project requirements
+yarn -v     # confirm Yarn available if used
+```
+
+Check for `.env` and other required secrets/config:
+
+```bash
+ls -la .env*
+```
+
+> If missing: STOP and request `.env` files from original source
+
+### 3. 🐳 Docker Check (Optional)
+
+```bash
+docker-compose config
+```
+
+Ensure services align with restored source structure (no default containers added).
+
+---
+
+## 🧩 GraphQL API (see separate API Map doc)
+
+* Backend likely powered by Apollo Server / type-graphql
+* Check `src/graphql/`, `src/entities/`, `src/resolvers/`
+* Use introspection only if server boots cleanly from restored state
+
+---
+
+## 📈 Integrity Verification Tools
+
+The following scripts were used and can be restored if needed:
+
+* `count-archives.sh` — Verifies file counts in `.tgz` archives
+* `count-extracted-complete.sh` — Counts total real extracted files
+* `find-missing-files.sh` — Diffs archive vs disk (normalized)
+
+> 🧼 All temp scripts removed post-verification for cleanliness
+
+---
+
+## 🔚 Status
+
+✅ **Rebuild baseline complete**
+🟡 Next Step: Execute backend dev server or Docker environment, and begin testing known endpoints/routes
+
+---
+
+## 🧠 Appendix
+
+**Helpful paths to monitor:**
+
+* `src/components/` (UI logic)
+* `libs/` (integrations)
+* `pages/` (routing)
+* `.docker*`, `cloudbuild.yaml` (CI/CD configs)
+
+**Backup Timestamp**: Confirmed from archives' UNIX time (1970 fallback observed)
+
+**Known Conflicts**: None remaining as of last diff count
