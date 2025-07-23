@@ -4,7 +4,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -14,21 +14,29 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": "src"
+    "baseUrl": ".",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@src/*": ["./src/*"],
+      "@config/*": ["./src/config/*"],
+      "@enums/*": ["./src/enums/*"],
+      "@entities/*": ["./src/entities/*"],
+      "@common/*": ["./src/common/*"],
+      "libs/*": ["./libs/*"],
+      "components/*": ["./src/components/*"],
+      "sharedProject/*": ["./src/sharedProject/*"],
+      "sharedArchitech/*": ["./src/sharedArchitech/*"],
+      "mui/*": ["./src/mui/*"],
+      "resources/*": ["./src/resources/*"],
+      "graphql/*": ["./src/graphql/*"],
+      "utils/*": ["./src/utils/*"],
+      "projectConstants": ["./src/projectConstants"],
+      "routes": ["./src/routes"],
+      "appContext": ["./src/appContext"]
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": [
-    "node_modules",
-    "src/main.ts",
-    "src/index.ts",
-    "src/entities/**/*",
-    "src/common/**/*",
-    "src/config/**/*",
-    "src/enums/**/*",
-    "src/graphql/**/*",
-    "src/migrations/**/*",
-    "src/routes.ts",
-    "src/utils/index_filter.ts",
-    "src/utils/utils.ts"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "libs/**/*.ts"],
+  "exclude": ["node_modules"]
 }
