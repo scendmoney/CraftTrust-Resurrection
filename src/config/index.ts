@@ -1,4 +1,4 @@
-import { decrypt, parseRedisConnectionString } from '@src/utils/utils';
+import { decrypt, safeDecrypt, parseRedisConnectionString } from '@src/utils/utils';
 import { CustomerioOptions } from 'libs/customerio/src';
 import { DiamondstandardOptions } from 'libs/diamondstandard/src';
 import { HederaOptions } from 'libs/hedera/src';
@@ -42,7 +42,12 @@ export const CONFIG = {
   },
   redis: {
     options: {
-      ...parseRedisConnectionString(process.env.REDIS_URL),
+      ...(process.env.REDIS_URL ? parseRedisConnectionString(process.env.REDIS_URL) : {
+        host: 'localhost',
+        port: 6379,
+        username: null,
+        password: null,
+      }),
       retryStrategy: (times) => {
         const delay = 5000;
         if (times >= 12 * 5) {
@@ -60,16 +65,17 @@ export const CONFIG = {
     cdnFirst: process.env.GOOGLE_STORAGE_CDN_FIRST,
     cdnSecond: process.env.GOOGLE_STORAGE_CDN_SECOND,
     backetName: process.env.GOOGLE_STORAGE_BUCKET_NAME,
-    backetCredentials: JSON.parse(
-      decrypt(
+    backetCredentials: (() => {
+      const decryptedCredentials = safeDecrypt(
         process.env.GOOGLE_STORAGE_CREDENTIALS,
         process.env.PLATFORM_KEY,
-        'storage',
-      ),
-    ),
+        'storage'
+      );
+      return decryptedCredentials ? JSON.parse(decryptedCredentials) : null;
+    })(),
   } as StorageDTO,
   metrc: {
-    softwareApiKey: decrypt(
+    softwareApiKey: safeDecrypt(
       process.env.METRC_SOFTWARE_KEY,
       process.env.PLATFORM_KEY,
       'metrc',
@@ -79,7 +85,7 @@ export const CONFIG = {
     }api-or.metrc.com`,
   } as MetrcAuthBasic,
   pinata: {
-    pinataSecretApiKey: decrypt(
+    pinataSecretApiKey: safeDecrypt(
       process.env.PINATA_SECRET_API_KEY,
       process.env.PLATFORM_KEY,
       'pinata',
@@ -108,19 +114,19 @@ export const CONFIG = {
     apiSecret: process.env.TRANSAK_API_SECRET,
   } as TransakOptions,
   hedera: {
-    mnemonic: decrypt(
+    mnemonic: safeDecrypt(
       process.env.HEDERA_PHRASE,
       process.env.PLATFORM_KEY,
       'mnemonic',
     ),
-    mnemonicClient: decrypt(
+    mnemonicClient: safeDecrypt(
       process.env.HEDERA_PHRASE_CLIENT,
       process.env.PLATFORM_KEY,
       'mnemonic',
     ),
     isTestnet: process.env.HEDERA_IS_TESTNET === 'true',
     isED25519: process.env.HEDERA_IS_ED25519 === 'true',
-    hederaAccountId: decrypt(
+    hederaAccountId: safeDecrypt(
       process.env.HEDERA_PLATFORM_ACCOUNT_ID,
       process.env.PLATFORM_KEY,
       'hedera',

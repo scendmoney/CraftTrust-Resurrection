@@ -18,7 +18,7 @@ export const removeUnderscores = <T>(items): T => {
   };
 
   return Array.isArray(items)
-    ? (items.map((item) => getObj(item)) as T)
+    ? (items.map((item) => getObj(item)) as unknown as T)
     : (getObj(items) as T);
 };
 
@@ -74,6 +74,21 @@ export const decrypt = (text: string, key1: string, key2: string) => {
     return decrypted.toString();
   } catch (error) {
     throw new Error(`Decrypt: ${error.message}`);
+  }
+};
+
+// Safe decrypt that returns null if secret is missing or decryption fails
+export const safeDecrypt = (encryptedValue: string | undefined, platformKey: string | undefined, context: string): string | null => {
+  if (!encryptedValue || !platformKey) {
+    console.warn(`Missing encrypted value or platform key for context: ${context}`);
+    return null;
+  }
+  
+  try {
+    return decrypt(encryptedValue, platformKey, context);
+  } catch (error) {
+    console.warn(`Failed to decrypt ${context}: ${error.message}`);
+    return null;
   }
 };
 
