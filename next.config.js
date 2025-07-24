@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const { withSentryConfig } = require('@sentry/nextjs');
+const path = require('path');
 
 module.exports = {
   reactStrictMode: true,
@@ -8,7 +9,37 @@ module.exports = {
     '@mui/icons-material',
     '@mui/x-date-pickers',
     '@devexpress/dx-react-grid-material-ui'
-  ]
+  ],
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Add alias resolution for custom paths (but NOT for graphql package)
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, 'src'),
+      '@src': path.resolve(__dirname, 'src'),
+      '@config': path.resolve(__dirname, 'src/config'),
+      '@enums': path.resolve(__dirname, 'src/enums'),
+      '@entities': path.resolve(__dirname, 'src/entities'),
+      '@common': path.resolve(__dirname, 'src/common'),
+      'libs': path.resolve(__dirname, 'libs'),
+      'components': path.resolve(__dirname, 'src/components'),
+      'sharedProject': path.resolve(__dirname, 'src/sharedProject'),
+      'sharedArchitech': path.resolve(__dirname, 'src/sharedArchitech'),
+      'mui': path.resolve(__dirname, 'src/mui'),
+      'resources': path.resolve(__dirname, 'src/resources'),
+      'utils': path.resolve(__dirname, 'src/utils'),
+      'projectConstants': path.resolve(__dirname, 'src/projectConstants.ts'),
+      'routes': path.resolve(__dirname, 'src/routes.ts'),
+      'appContext': path.resolve(__dirname, 'src/appContext.ts'),
+      // Explicitly map src/graphql to avoid conflicts with the graphql package
+      'src/graphql': path.resolve(__dirname, 'src/graphql')
+    };
+
+    // Add module resolution to include node_modules
+    config.resolve.modules = config.resolve.modules || [];
+    config.resolve.modules.push(path.resolve(__dirname, 'node_modules'));
+    
+    return config;
+  }
 };
 
 // Injected content via Sentry wizard below
