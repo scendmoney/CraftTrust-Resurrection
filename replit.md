@@ -65,6 +65,8 @@ CraftTrust is an enterprise-grade cannabis industry platform providing comprehen
 - Focus on comprehensive solutions over incremental updates
 - Preference for complete architectural documentation
 - Interest in cannabis industry domain expertise
+- Planning migration from CARAT tokens to TRST stablecoin via brale.xyz
+- Requires detailed commerce system analysis for token migration strategy
 
 ## Key Features
 - Multi-role user management (Admin, Cultivator, Buyer, Client, Employee)
