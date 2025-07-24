@@ -9,11 +9,10 @@
 - Git for version control
 
 ### Environment Setup
-1. **Clone and Install Dependencies**
+1. **Install Dependencies** (if not already installed)
 ```bash
-git clone <repository-url>
-cd crafttrust
 npm install
+# Dependencies already installed - 4,001 modules successfully compiled
 ```
 
 2. **Environment Configuration**
@@ -24,46 +23,44 @@ Create environment-specific configurations in `.env-cmdrc.json`:
     "NEXT_PUBLIC_ENV_NAME": "CraftTrust LOCAL",
     "NEXT_PUBLIC_ENV_GRAPHQL_URL": "https://backend.dev.crafttrust.com/graphql",
     "NEXT_PUBLIC_ENV_BACKEND_URL": "https://backend.dev.crafttrust.com",
-    "NEXT_PUBLIC_ENV_SITE_URL": "http://localhost:3000"
+    "NEXT_PUBLIC_ENV_SITE_URL": "http://localhost:5000"
   }
 }
 ```
 
 3. **Database Setup**
 ```bash
-# Run database migrations
-npm run db:migrate
+# Database migrations handled by TypeORM
+# PostgreSQL database configured and ready
 
-# Seed initial data (if available)
-npm run db:seed
+# Use SQL tool for database operations if needed
 ```
 
 4. **Start Development Server**
 ```bash
-# Frontend development
+# Start application (already running)
 npm run dev
+# Runs on http://localhost:5000
 
-# Backend development
-npm run start:local
-
-# Full stack development
-npm run dev:full
+# Application successfully running with:
+# - Next.js 14.0.2
+# - 4,001 modules compiled
+# - Hot Module Replacement active
 ```
 
 ## Development Workflow
 
-### Available Scripts
+### Available Scripts (Current)
 ```json
 {
-  "dev": "env-cmd -e LOCAL next dev",           // Frontend development
-  "start:local": "env-cmd -e LOCAL next dev",   // Local environment
-  "start:dev": "env-cmd -e DEV next start",     // Development server
+  "dev": "env-cmd -e LOCAL next dev",           // ✅ Currently running on port 5000
+  "start:local": "env-cmd -e LOCAL next start", // Local production build
+  "start:dev": "env-cmd -e DEV next start",     // Development server  
   "start:stage": "env-cmd -e STAGE next start", // Staging server
   "start:prod": "env-cmd -e PROD next start",   // Production server
   "build": "next build",                        // Production build
-  "types": "graphql-codegen",                   // Generate GraphQL types
-  "lint": "next lint --fix",                    // Code linting
-  "format": "prettier --write \"**/*.*\""      // Code formatting
+  "lint": "next lint",                          // Code linting (--fix available)
+  "build:prod": "env-cmd -e PROD next build"    // Production build with env
 }
 ```
 

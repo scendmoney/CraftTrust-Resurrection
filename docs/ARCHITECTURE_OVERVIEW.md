@@ -7,11 +7,12 @@ CraftTrust is an enterprise-grade cannabis industry platform that provides compr
 ## Technology Stack
 
 ### Frontend Architecture
-- **Framework**: Next.js 14.0.3 with React 18.2.0
+- **Framework**: Next.js 14.0.2 with React 18.2.0
 - **Language**: TypeScript 4.7.4
 - **Styling**: Material-UI (MUI) 5.14.11 + Emotion
 - **State Management**: Apollo Client 3.6.9 with GraphQL
 - **Authentication**: Magic SDK with wallet integration
+- **3D Graphics**: Spline Runtime for interactive 3D components
 - **Date Handling**: Date-fns with timezone support
 - **Build Tool**: Next.js with custom webpack configuration
 
@@ -31,6 +32,7 @@ CraftTrust is an enterprise-grade cannabis industry platform that provides compr
 - **Analytics**: Customer.io + Mixpanel integration
 - **Maps**: Google Maps API integration
 - **Communication**: Twilio for SMS and chat functionality
+- **Port Configuration**: Application runs on port 5000 for Replit compatibility
 
 ## Core Domain Models
 
