@@ -2,9 +2,11 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/admin/settings": "pages/admin/settings.js",
-  "/wallet": "pages/wallet.js",
-  "/client": "pages/client.js",
+  "/": "pages/index.js",
   "/404": "pages/404.js",
-  "/cultivator/inventory": "pages/cultivator/inventory.js"
+  "/client": "pages/client.js",
+  "/wallet": "pages/wallet.js",
+  "/cultivator/inventory": "pages/cultivator/inventory.js",
+  "/about": "pages/about.js",
+  "/cultivator": "pages/cultivator.js"
 }
