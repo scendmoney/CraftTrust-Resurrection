@@ -1,0 +1,98 @@
+Here’s what Mehow will want to see from you **in order to effectively instruct and support your MatterFi integration**:
+
+---
+
+## 🔍 1. **Current State of Your Stack**
+
+**So he can understand where MatterFi fits and avoid redundant effort.**
+
+### You should show:
+
+* ✅ **Tech stack overview** (React frontend, Brale + Hedera backend, etc.)
+* ✅ **Running local CraftTrust Storefront MVP** — quick video or screen share of it live
+* ✅ **Context Engine status**:
+
+  * Messaging loop (done or planned)
+  * Payments loop (TRST mock implemented?)
+  * Engagement loop (NFT reward path live?)
+
+**Bonus:** Share your canonical folder structure (e.g. from `scend-agent-kernel/`) to give him architectural context
+
+---
+
+## 🧩 2. **Integration Targets**
+
+**So he knows what functions or SDK surfaces you want him to support.**
+
+### Specifically:
+
+* 🟢 `createIdentity()` for businesses (from cash receipt trigger)
+* 🟢 `registerName()` or alias mapping for send-to-name
+* 🟢 `mint()` based on Brinks cash confirmation
+* 🟢 `send()` using MatterID/handle (with context metadata)
+* 🟡 `getDisplayName()` to resolve wallet sender/receiver names
+
+You should show:
+
+* A list of **TRST payment flows** you want to trigger from your UI
+* Where you plan to call MatterFi APIs or SDK methods
+* A sketch of the desired data structure per wallet or transaction
+
+---
+
+## 🧠 3. **Mental Model of Your Desired UX**
+
+**So he understands your product philosophy and can guide the SDK integration without friction.**
+
+You should articulate:
+
+* 🚫 Users don’t “connect wallets” — MatterFi handles it invisibly
+* ✅ Every user (consumer or biz) gets a wallet behind the scenes at onboarding
+* ✅ Payments are contextual — “pay vendor for invoice,” not just raw transfers
+* ✅ Campaigns and redemptions are engagement loops, not DeFi
+
+---
+
+## 📋 4. **A Simple Demo Flow (Even with Mocks)**
+
+**So he knows you’re ready to receive the SDK and plug it in with low lift.**
+
+You should prepare:
+
+```ts
+// Simulated flow
+await matterFi.createIdentity({ name: "Green Leaf Dispensary", taxId: "xx" })
+await matterFi.mint({ amount: 5000, source: "Brinks Vault ID 12" })
+await matterFi.send({ to: "@VendorCo", amount: 1200, context: "Invoice #543" })
+```
+
+* Link it to your Storefront UI or TRST payment modal
+* Highlight where he should replace the mocks with SDK calls
+
+---
+
+## 📎 5. **One Diagram**
+
+**So he can visualize the flow and give architecture-level feedback.**
+
+Create a 1-page diagram that shows:
+
+```
+[ Brinks ] --> [ MatterFi mint trigger ] --> [ TRST Wallet (MatterFi SDK) ] --> [ CraftTrust Storefronts ] --> [ B2B Payments / Redemptions ]
+```
+
+---
+
+## ✅ Summary: What Mehow Wants from You
+
+| What                  | Format                       | Why                                           |
+| --------------------- | ---------------------------- | --------------------------------------------- |
+| ✅ App overview        | Live demo or screen share    | To understand your build + UX                 |
+| ✅ Integration targets | List of needed SDK functions | To guide SDK use or write wrappers            |
+| ✅ UX philosophy       | Verbal or 1-pager            | To align SDK usage with your onboarding model |
+| ✅ Working mock flow   | Small code snippet           | To see where and how to plug SDK              |
+| ✅ System diagram      | PDF, Figma, or whiteboard    | To offer feedback on architecture             |
+
+---
+
+Want me to build you a one-sheet with all this in a shareable layout you can send Mehow before the call?
