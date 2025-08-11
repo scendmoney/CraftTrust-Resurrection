@@ -28,7 +28,8 @@ import styles from './styles';
 
 const EmailSignIn: FC = () => {
   const { isLoading, startLoading, stopLoading } = useLoading();
-  const { setToken } = useAuth();
+  const { magicLogin, isReady } = useMagicLink(); // Initialize Magic Link hook
+
   const router = useRouter();
 
   const [login] = useMutation<{ login: IUserTokenDto }, IMutationLoginArgs>(LOGIN);
@@ -36,7 +37,6 @@ const EmailSignIn: FC = () => {
   const {
     handleSubmit,
     control,
-    getValues,
     formState: { errors }
   } = useForm<IUserLoginInput>({
     mode: 'onChange',
@@ -45,6 +45,31 @@ const EmailSignIn: FC = () => {
       password: ''
     }
   });
+
+  const handleMagicLogin = async (data: IUserLoginInput) => {
+    if (!isReady || !magicLogin) {
+      toast.error('Magic Link is not ready yet');
+      return;
+    }
+
+    try {
+      startLoading();
+      const didToken = await magicLogin(data.email);
+
+      if (didToken) {
+        // Here you would typically send the didToken to your backend
+        // for verification and user authentication
+        toast.success('Magic link sent! Check your email.');
+        // You can redirect or handle the token as needed
+        // router.push('/dashboard');
+      }
+    } catch (error) {
+      console.error('Magic login failed:', error);
+      toast.error('Failed to send magic link. Please try again.');
+    } finally {
+      stopLoading();
+    }
+  };
 
   return (
     <>
@@ -126,6 +151,12 @@ const EmailSignIn: FC = () => {
                 <ButtonUi fullWidth var={EButtonType.Text} onClick={handleGoToSmsAuth}>
                   <Typography variant="caption" color={colors.gray2}>
                     Sign in with SMS
+                  </Typography>
+                </ButtonUi>
+
+                <ButtonUi fullWidth var={EButtonType.Text} onClick={() => handleSubmit(handleMagicLogin)()}>
+                  <Typography variant="caption" color={colors.gray2}>
+                    Sign in with Magic Link
                   </Typography>
                 </ButtonUi>
               </>

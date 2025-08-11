@@ -21,6 +21,7 @@ import resolvePhoneNumber from 'sharedProject/utils/resolvePhoneNumber';
 
 import Loader from 'components/Loader/Loader';
 import WalletWrapper from 'components/Wallet/shared/WalletWrapper/WalletWrapper';
+import useMagicLink from 'components/Wallet/shared/useMagicLink';
 
 import AuthButtons from '../shared/components/AuthButtons/AuthButtons';
 
@@ -28,8 +29,29 @@ import styles from './styles';
 
 const JoinWallet: FC<{ subcompanyId?: number; phone?: string }> = ({ subcompanyId, phone }) => {
   const { isLoading, startLoading, stopLoading } = useLoading();
+  const { showWallet, isReady } = useMagicLink();
 
   const router = useRouter();
+
+  const handleConnectWallet = async () => {
+    if (!isReady || !showWallet) {
+      toast.error('Magic Link is not ready yet');
+      return;
+    }
+
+    try {
+      startLoading();
+      await showWallet();
+      toast.success('Wallet connected successfully!');
+      // Handle successful wallet connection
+      // router.push('/dashboard');
+    } catch (error) {
+      console.error('Wallet connection failed:', error);
+      toast.error('Failed to connect wallet. Please try again.');
+    } finally {
+      stopLoading();
+    }
+  };
 
   const [generateCodeSMS] = useMutation<{ generateCodeSMS: boolean }, IMutationGenerateCodeSmsArgs>(
     GENERATE_CODE_SMS
@@ -120,6 +142,11 @@ const JoinWallet: FC<{ subcompanyId?: number; phone?: string }> = ({ subcompanyI
               </AuthButtons>
             </>
           </form>
+          <Box sx={{ mt: 2 }}>
+            <ButtonUi fullWidth var={EButtonType.Secondary} onClick={handleConnectWallet}>
+              Connect Wallet
+            </ButtonUi>
+          </Box>
         </Box>
       </WalletWrapper>
     </>

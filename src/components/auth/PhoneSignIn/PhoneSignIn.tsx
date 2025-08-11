@@ -26,7 +26,7 @@ import styles from './styles';
 
 const PhoneSignIn: FC = () => {
   const { isLoading, startLoading, stopLoading } = useLoading();
-  const { magicLogin } = useMagicLink(); // Initialize Magic Link hook
+  const { magicSMSLogin, isReady } = useMagicLink(); // Initialize Magic Link hook
 
   const router = useRouter();
 
@@ -44,6 +44,32 @@ const PhoneSignIn: FC = () => {
       phone: ''
     }
   });
+
+  const handleLoginSMS = async (data: IGenerateCodeSmsInput) => {
+    if (!isReady || !magicSMSLogin) {
+      toast.error('Magic Link is not ready yet');
+      return;
+    }
+
+    try {
+      startLoading();
+      const phoneNumber = resolvePhoneNumber(data.phone);
+      const didToken = await magicSMSLogin(phoneNumber);
+      
+      if (didToken) {
+        // Here you would typically send the didToken to your backend
+        // for verification and user authentication
+        toast.success('SMS sent! Check your phone.');
+        // You can redirect or handle the token as needed
+        // router.push('/dashboard');
+      }
+    } catch (error) {
+      console.error('Magic SMS login failed:', error);
+      toast.error('Failed to send SMS. Please try again.');
+    } finally {
+      stopLoading();
+    }
+  };
 
   return (
     <>
