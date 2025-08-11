@@ -97,7 +97,7 @@ const ForgotPassword: FC<{ code: string }> = ({ code }) => {
                     <ButtonUi fullWidth var={EButtonType.Primary} type="submit">
                       Confirm
                     </ButtonUi>
-                    <ButtonUi var={EButtonType.Gray} onClick={handleGoToEmailAuth}>
+                    <ButtonUi var={EButtonType.Gray} onClick={handleGoToPhoneAuth}>
                       Cancel
                     </ButtonUi>
                   </>
@@ -110,8 +110,8 @@ const ForgotPassword: FC<{ code: string }> = ({ code }) => {
     </>
   );
 
-  async function handleGoToEmailAuth() {
-    await router.push(Routes.SIGN_IN);
+  async function handleGoToPhoneAuth() {
+    await router.push(Routes.SIGN_IN_PHONE);
   }
 
   async function onSubmit(inputs: { password: string }) {

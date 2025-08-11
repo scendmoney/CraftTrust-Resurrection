@@ -1,18 +1,17 @@
 import { NextPage } from 'next';
-import Head from 'next/head';
-import seo from 'sharedProject/seo';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import Routes from 'routes';
 
-import EmailSignIn from 'components/auth/EmailSignIn/EmailSignIn';
+const AuthIndexPage: NextPage = () => {
+  const router = useRouter();
 
-const EmailPage: NextPage = () => {
-  return (
-    <>
-      <Head>
-        <title>E-mail Sign In - {seo.name}</title>
-      </Head>
-      <EmailSignIn />
-    </>
-  );
+  useEffect(() => {
+    // Redirect to SMS sign-in page
+    router.replace(Routes.SIGN_IN_PHONE);
+  }, [router]);
+
+  return null;
 };
 
-export default EmailPage;
+export default AuthIndexPage;

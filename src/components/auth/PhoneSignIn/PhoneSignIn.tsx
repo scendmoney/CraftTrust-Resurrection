@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useMutation } from '@apollo/client';
@@ -14,6 +14,7 @@ import ButtonUi from 'sharedProject/components/ButtonUi/ButtonUi';
 import { EButtonType } from 'sharedProject/components/ButtonUi/types';
 import InputPhone from 'sharedProject/components/inputs/InputPhone/InputPhone';
 import resolvePhoneNumber from 'sharedProject/utils/resolvePhoneNumber';
+import useMagicLink from 'sharedProject/hooks/useMagicLink';
 
 import AuthBlock from 'components/auth/shared/components/AuthBlock/AuthBlock';
 import AuthLogo from 'components/auth/shared/components/AuthLogo/AuthLogo';
@@ -25,7 +26,7 @@ import styles from './styles';
 
 const PhoneSignIn: FC = () => {
   const { isLoading, startLoading, stopLoading } = useLoading();
-
+  const { magicSMSLogin, isReady } = useMagicLink();
   const router = useRouter();
 
   const [generateCodeSMS] = useMutation<{ generateCodeSMS: boolean }, IMutationGenerateCodeSmsArgs>(
@@ -42,6 +43,50 @@ const PhoneSignIn: FC = () => {
       phone: ''
     }
   });
+
+  const handleLoginSMS = async (data: IGenerateCodeSmsInput) => {
+    try {
+      startLoading();
+      const phoneNumber = resolvePhoneNumber(data.phone);
+
+      // Try Magic SMS first if available
+      if (isReady && magicSMSLogin) {
+        try {
+          const didToken = await magicSMSLogin(phoneNumber);
+          if (didToken) {
+            toast.success('SMS sent via Magic! Check your phone.');
+            // Handle the Magic token here - you might want to send it to your backend
+            console.log('Magic DID Token:', didToken);
+            return;
+          }
+        } catch (magicError) {
+          console.log('Magic SMS failed, falling back to legacy SMS:', magicError);
+        }
+      }
+
+      // Fallback to legacy SMS system
+      const response = await generateCodeSMS({
+        variables: {
+          payload: {
+            phone: phoneNumber
+          }
+        }
+      });
+
+      if (response.data?.generateCodeSMS) {
+        await router.push({
+          pathname: `/auth/sms-code`,
+          query: {
+            phone: `${data.phone}`
+          }
+        });
+      }
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+    } finally {
+      stopLoading();
+    }
+  };
 
   return (
     <>
@@ -70,7 +115,6 @@ const PhoneSignIn: FC = () => {
                 <Controller
                   control={control}
                   name="phone"
-                  // rules={validations.requiredPhone}
                   render={({ field: { value, onChange, onBlur } }) => (
                     <InputPhone
                       tabIndex={1}
@@ -89,16 +133,6 @@ const PhoneSignIn: FC = () => {
                     Continue
                   </ButtonUi>
                 </Box>
-
-                <Box pt={4} pb={1}>
-                  <Divider light />
-                </Box>
-
-                <ButtonUi fullWidth var={EButtonType.Text} onClick={handleGoToEmailAuth}>
-                  <Typography variant="caption" color={colors.gray2}>
-                    Sign in with E-mail
-                  </Typography>
-                </ButtonUi>
               </>
             </form>
           </AuthBlock>
@@ -106,36 +140,6 @@ const PhoneSignIn: FC = () => {
       </AuthWrapper>
     </>
   );
-
-  async function handleGoToEmailAuth() {
-    await router.push(Routes.SIGN_IN);
-  }
-
-  async function handleLoginSMS(inputs: IGenerateCodeSmsInput) {
-    try {
-      startLoading();
-
-      const response = await generateCodeSMS({
-        variables: {
-          payload: {
-            phone: resolvePhoneNumber(inputs.phone)
-          }
-        }
-      });
-      if (response.data?.generateCodeSMS) {
-        await router.push({
-          pathname: `/auth/sms-code`,
-          query: {
-            phone: `${inputs.phone}`
-          }
-        });
-      }
-    } catch (err) {
-      toast.error(getErrorMessage(err));
-    } finally {
-      stopLoading();
-    }
-  }
 };
 
 export default PhoneSignIn;
