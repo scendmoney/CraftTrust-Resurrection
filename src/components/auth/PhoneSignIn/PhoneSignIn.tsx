@@ -118,15 +118,7 @@ const PhoneSignIn: FC = () => {
                   </ButtonUi>
                 </Box>
 
-                <Box pt={4} pb={1}>
-                  <Divider light />
-                </Box>
-
-                <ButtonUi fullWidth var={EButtonType.Text} onClick={handleGoToEmailAuth}>
-                  <Typography variant="caption" color={colors.gray2}>
-                    Sign in with E-mail
-                  </Typography>
-                </ButtonUi>
+                
               </>
             </form>
           </AuthBlock>
@@ -135,9 +127,7 @@ const PhoneSignIn: FC = () => {
     </>
   );
 
-  async function handleGoToEmailAuth() {
-    await router.push(Routes.SIGN_IN);
-  }
+  
 
   async function handleLoginSMS(inputs: IGenerateCodeSmsInput) {
     try {

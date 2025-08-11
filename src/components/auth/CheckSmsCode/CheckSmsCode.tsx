@@ -157,7 +157,7 @@ const SignIn: FC<{ phone: string }> = ({ phone }) => {
   );
 
   async function handleCancel() {
-    await router.push(Routes.SIGN_IN_PHONE);
+    await router.push(Routes.SIGN_IN_PHONE);.push(Routes.SIGN_IN_PHONE);
   }
 
   async function handleResendCode() {
