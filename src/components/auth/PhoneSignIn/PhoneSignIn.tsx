@@ -26,8 +26,7 @@ import styles from './styles';
 
 const PhoneSignIn: FC = () => {
   const { isLoading, startLoading, stopLoading } = useLoading();
-  const { magicSMSLogin, isReady } = useMagicLink(); // Initialize Magic Link hook
-
+  const { magicSMSLogin, isReady } = useMagicLink();
   const router = useRouter();
 
   const [generateCodeSMS] = useMutation<{ generateCodeSMS: boolean }, IMutationGenerateCodeSmsArgs>(
@@ -46,26 +45,44 @@ const PhoneSignIn: FC = () => {
   });
 
   const handleLoginSMS = async (data: IGenerateCodeSmsInput) => {
-    if (!isReady || !magicSMSLogin) {
-      toast.error('Magic Link is not ready yet');
-      return;
-    }
-
     try {
       startLoading();
       const phoneNumber = resolvePhoneNumber(data.phone);
-      const didToken = await magicSMSLogin(phoneNumber);
-      
-      if (didToken) {
-        // Here you would typically send the didToken to your backend
-        // for verification and user authentication
-        toast.success('SMS sent! Check your phone.');
-        // You can redirect or handle the token as needed
-        // router.push('/dashboard');
+
+      // Try Magic SMS first if available
+      if (isReady && magicSMSLogin) {
+        try {
+          const didToken = await magicSMSLogin(phoneNumber);
+          if (didToken) {
+            toast.success('SMS sent via Magic! Check your phone.');
+            // Handle the Magic token here - you might want to send it to your backend
+            console.log('Magic DID Token:', didToken);
+            return;
+          }
+        } catch (magicError) {
+          console.log('Magic SMS failed, falling back to legacy SMS:', magicError);
+        }
       }
-    } catch (error) {
-      console.error('Magic SMS login failed:', error);
-      toast.error('Failed to send SMS. Please try again.');
+
+      // Fallback to legacy SMS system
+      const response = await generateCodeSMS({
+        variables: {
+          payload: {
+            phone: phoneNumber
+          }
+        }
+      });
+
+      if (response.data?.generateCodeSMS) {
+        await router.push({
+          pathname: `/auth/sms-code`,
+          query: {
+            phone: `${data.phone}`
+          }
+        });
+      }
+    } catch (err) {
+      toast.error(getErrorMessage(err));
     } finally {
       stopLoading();
     }
@@ -98,7 +115,6 @@ const PhoneSignIn: FC = () => {
                 <Controller
                   control={control}
                   name="phone"
-                  // rules={validations.requiredPhone}
                   render={({ field: { value, onChange, onBlur } }) => (
                     <InputPhone
                       tabIndex={1}
@@ -117,8 +133,6 @@ const PhoneSignIn: FC = () => {
                     Continue
                   </ButtonUi>
                 </Box>
-
-                
               </>
             </form>
           </AuthBlock>
@@ -126,34 +140,6 @@ const PhoneSignIn: FC = () => {
       </AuthWrapper>
     </>
   );
-
-  
-
-  async function handleLoginSMS(inputs: IGenerateCodeSmsInput) {
-    try {
-      startLoading();
-
-      const response = await generateCodeSMS({
-        variables: {
-          payload: {
-            phone: resolvePhoneNumber(inputs.phone)
-          }
-        }
-      });
-      if (response.data?.generateCodeSMS) {
-        await router.push({
-          pathname: `/auth/sms-code`,
-          query: {
-            phone: `${inputs.phone}`
-          }
-        });
-      }
-    } catch (err) {
-      toast.error(getErrorMessage(err));
-    } finally {
-      stopLoading();
-    }
-  }
 };
 
 export default PhoneSignIn;

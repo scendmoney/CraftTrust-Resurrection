@@ -16,12 +16,11 @@ import validations from 'sharedArchitech/validations';
 import ButtonUi from 'sharedProject/components/ButtonUi/ButtonUi';
 import { EButtonType } from 'sharedProject/components/ButtonUi/types';
 import InputPhone from 'sharedProject/components/inputs/InputPhone/InputPhone';
-import InputText from 'sharedProject/components/inputs/InputText/InputText';
 import resolvePhoneNumber from 'sharedProject/utils/resolvePhoneNumber';
 
 import Loader from 'components/Loader/Loader';
 import WalletWrapper from 'components/Wallet/shared/WalletWrapper/WalletWrapper';
-import useMagicLink from 'components/Wallet/shared/useMagicLink';
+import useMagicLink from 'sharedProject/hooks/useMagicLink';
 
 import AuthButtons from '../shared/components/AuthButtons/AuthButtons';
 

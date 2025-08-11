@@ -22,6 +22,7 @@ import { EButtonType } from 'sharedProject/components/ButtonUi/types';
 import InputCode from 'sharedProject/components/inputs/InputCode/InputCode';
 import useAuth from 'sharedProject/hooks/useAuth';
 import resolvePhoneNumber from 'sharedProject/utils/resolvePhoneNumber';
+import useMagicLink from 'sharedProject/hooks/useMagicLink';
 
 import AuthBlock from 'components/auth/shared/components/AuthBlock/AuthBlock';
 import AuthLogo from 'components/auth/shared/components/AuthLogo/AuthLogo';
@@ -157,7 +158,7 @@ const SignIn: FC<{ phone: string }> = ({ phone }) => {
   );
 
   async function handleCancel() {
-    await router.push(Routes.SIGN_IN_PHONE);.push(Routes.SIGN_IN_PHONE);
+    await router.push(Routes.SIGN_IN_PHONE);
   }
 
   async function handleResendCode() {
