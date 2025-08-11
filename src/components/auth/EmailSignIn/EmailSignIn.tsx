@@ -13,6 +13,11 @@ import useLoading from 'sharedArchitech/hooks/useLoading/useLoading';
 import getErrorMessage from 'sharedArchitech/utils/getErrorMessage';
 import validations from 'sharedArchitech/validations';
 import ButtonUi from 'sharedProject/components/ButtonUi/ButtonUi';
+import { FC } from 'react';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import { useLoading } from 'sharedArchitech/hooks/useLoading';
+
 import { EButtonType } from 'sharedProject/components/ButtonUi/types';
 import InputText from 'sharedProject/components/inputs/InputText/InputText';
 import useAuth from 'sharedProject/hooks/useAuth';
