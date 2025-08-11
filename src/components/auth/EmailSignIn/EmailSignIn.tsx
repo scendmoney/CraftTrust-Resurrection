@@ -16,6 +16,7 @@ import ButtonUi from 'sharedProject/components/ButtonUi/ButtonUi';
 import { EButtonType } from 'sharedProject/components/ButtonUi/types';
 import InputText from 'sharedProject/components/inputs/InputText/InputText';
 import useAuth from 'sharedProject/hooks/useAuth';
+import useMagicLink from 'sharedProject/hooks/useMagicLink';
 
 import AuthBlock from 'components/auth/shared/components/AuthBlock/AuthBlock';
 import AuthLogo from 'components/auth/shared/components/AuthLogo/AuthLogo';
@@ -29,6 +30,7 @@ import styles from './styles';
 const EmailSignIn: FC = () => {
   const { isLoading, startLoading, stopLoading } = useLoading();
   const { magicLogin, isReady } = useMagicLink(); // Initialize Magic Link hook
+  const { setToken } = useAuth();
 
   const router = useRouter();
 
@@ -37,6 +39,7 @@ const EmailSignIn: FC = () => {
   const {
     handleSubmit,
     control,
+    getValues,
     formState: { errors }
   } = useForm<IUserLoginInput>({
     mode: 'onChange',
