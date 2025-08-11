@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useMutation } from '@apollo/client';
@@ -14,6 +14,7 @@ import ButtonUi from 'sharedProject/components/ButtonUi/ButtonUi';
 import { EButtonType } from 'sharedProject/components/ButtonUi/types';
 import InputPhone from 'sharedProject/components/inputs/InputPhone/InputPhone';
 import resolvePhoneNumber from 'sharedProject/utils/resolvePhoneNumber';
+import useMagicLink from 'sharedProject/hooks/useMagicLink';
 
 import AuthBlock from 'components/auth/shared/components/AuthBlock/AuthBlock';
 import AuthLogo from 'components/auth/shared/components/AuthLogo/AuthLogo';
@@ -25,6 +26,7 @@ import styles from './styles';
 
 const PhoneSignIn: FC = () => {
   const { isLoading, startLoading, stopLoading } = useLoading();
+  const { magicLogin } = useMagicLink(); // Initialize Magic Link hook
 
   const router = useRouter();
 
